@@ -1,0 +1,57 @@
+[
+  {
+    "id": "TRACE-7019",
+    "timestamp": "2026-10-25T14:35:10.104Z",
+    "source": "Edge-WAF-Gateway",
+    "target": "Kube-Core-Cluster",
+    "protocol": "gRPC",
+    "status": "200_OK",
+    "latencyMs": 1.8,
+    "payloadSize": "4.2KB",
+    "details": "Inbound API request /api/v2/auth routed successfully via Envoy proxy."
+  },
+  {
+    "id": "TRACE-7020",
+    "timestamp": "2026-10-25T14:35:10.118Z",
+    "source": "Kube-Core-Cluster",
+    "target": "Postgres-Primary-DB",
+    "protocol": "TCP/SQL",
+    "status": "200_OK",
+    "latencyMs": 3.4,
+    "payloadSize": "12.8KB",
+    "details": "Connection pool leased connection #42. Query: SELECT * FROM sessions WHERE token = $1."
+  },
+  {
+    "id": "TRACE-7021",
+    "timestamp": "2026-10-25T14:35:12.440Z",
+    "source": "Edge-WAF-Gateway",
+    "target": "SOC-Security-Sentinel",
+    "protocol": "HTTPS",
+    "status": "403_BLOCKED",
+    "latencyMs": 0.9,
+    "payloadSize": "1.1KB",
+    "details": "Rate limit exceeded: IP 185.220.101.4 triggered WAF rule #941 (SQLi pattern detected)."
+  },
+  {
+    "id": "TRACE-7022",
+    "timestamp": "2026-10-25T14:35:14.200Z",
+    "source": "Kube-Core-Cluster",
+    "target": "Kafka-Event-Bus",
+    "protocol": "Kafka/TCP",
+    "status": "PRODUCED",
+    "latencyMs": 2.1,
+    "payloadSize": "8.4KB",
+    "details": "Message published to topic 'telemetry.audit.events' [partition 3, offset 1948291]."
+  },
+  {
+    "id": "TRACE-7023",
+    "timestamp": "2026-10-25T14:35:18.910Z",
+    "source": "SOC-Security-Sentinel",
+    "target": "Edge-WAF-Gateway",
+    "protocol": "Internal",
+    "status": "WARN",
+    "latencyMs": 1.2,
+    "payloadSize": "0.5KB",
+    "details": "Dynamic CIDR block applied to 185.220.100.0/22 for 3600 seconds."
+  }
+]
