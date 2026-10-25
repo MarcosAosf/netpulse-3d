@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NetPulse-3D // Cloud Network Topology & SRE Observability HUD</title>
+  <title>NetPulse-3D // Topologia de Rede Cloud e Observabilidade SRE</title>
   
-  <!-- Fonts -->
+  <!-- Fontes -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
@@ -13,134 +13,134 @@
   <!-- Three.js CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-  <!-- Stylesheet -->
+  <!-- Folha de Estilos -->
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="crt-active">
 
-  <!-- CRT Scanline Shader Layer -->
+  <!-- Camada CRT Retrô -->
   <div class="crt-overlay"></div>
 
-  <!-- Top Navigation Bar -->
+  <!-- Cabeçalho de Navegação e Telemetria -->
   <header class="top-header">
     <div class="brand-section">
       <div class="brand-badge">SRE-OBS-v3</div>
       <div>
         <div class="brand-title">NETPULSE-3D</div>
-        <div class="brand-subtitle">DISTRIBUTED CLUSTER TOPOLOGY & SOC TELEMETRY</div>
+        <div class="brand-subtitle">TOPOLOGIA DE SERVICE MESH & TELEMETRIA SOC EM TEMPO REAL</div>
       </div>
     </div>
 
-    <!-- Cluster Telemetry Strip -->
+    <!-- Barra de Métricas Rápidas do Cluster -->
     <div class="cluster-strip">
       <div class="cluster-item">
-        <span class="cluster-label">CLUSTER STATUS</span>
-        <span class="cluster-value val-green">HEALTHY (99.98%)</span>
+        <span class="cluster-label">STATUS DO CLUSTER</span>
+        <span class="cluster-value val-green">SAUDÁVEL (99.98%)</span>
       </div>
       <div class="cluster-item">
-        <span class="cluster-label">INGRESS LOAD</span>
-        <span id="metricRps" class="cluster-value val-cyan">1,420 req/s</span>
+        <span class="cluster-label">CARGA DE ENTRADA</span>
+        <span id="metricRps" class="cluster-value val-cyan">1.420 req/s</span>
       </div>
       <div class="cluster-item">
-        <span class="cluster-label">P95 LATENCY</span>
+        <span class="cluster-label">LATÊNCIA P95</span>
         <span id="metricLatency" class="cluster-value val-green">2.4 ms</span>
       </div>
       <div class="cluster-item">
-        <span class="cluster-label">ERROR RATE</span>
+        <span class="cluster-label">TAXA DE ERRO</span>
         <span id="metricErrors" class="cluster-value val-green">0.04%</span>
       </div>
       <div class="cluster-item">
-        <span class="cluster-label">SOC MITIGATIONS</span>
-        <span class="cluster-value val-cyan">14 ATTACKS BLOCKED</span>
+        <span class="cluster-label">MITIGAÇÕES SOC</span>
+        <span class="cluster-value val-cyan">14 ATAQUES BLOQUEADOS</span>
       </div>
     </div>
 
-    <!-- Quick Controls -->
+    <!-- Controles Rápidos -->
     <div class="header-controls">
-      <button id="audioToggleBtn" class="hud-btn active">AUDIO: ON</button>
-      <button id="crtToggleBtn" class="hud-btn active">CRT: ON</button>
+      <button id="audioToggleBtn" class="hud-btn active">ÁUDIO: LIGADO</button>
+      <button id="crtToggleBtn" class="hud-btn active">CRT: LIGADO</button>
     </div>
   </header>
 
-  <!-- Main Multi-Column Operations HUD -->
+  <!-- Painel de Operações Principal em Colunas -->
   <main class="dashboard-grid">
 
-    <!-- Column 1: Three.js 3D Cloud Topology -->
+    <!-- Coluna 1: Topologia 3D do Cluster com Three.js -->
     <section class="hud-panel left-column">
       <div class="panel-header">
-        <span>3D CLUSTER MESH TOPOLOGY</span>
-        <span class="badge">WEBGL LIVE</span>
+        <span>TOPOLOGIA DE INFRAESTRUTURA 3D</span>
+        <span class="badge">WEBGL ATIVO</span>
       </div>
       <div class="panel-body">
         
-        <!-- Three.js Canvas Container -->
+        <!-- Contêiner do Canvas Three.js -->
         <div id="three-container">
-          <div class="three-hint">ORBIT // CLICK TO FOCUS NODE</div>
+          <div class="three-hint">ORBITAR // CLIQUE NO NÓ PARA FOCAR</div>
         </div>
 
-        <!-- Infrastructure KPIs -->
+        <!-- Indicadores Chave de Infraestrutura (KPIs) -->
         <div class="metrics-row">
           <div class="metric-box">
-            <div class="metric-title">Active Pods</div>
+            <div class="metric-title">Pods Ativos</div>
             <div class="metric-val val-cyan">24 / 24</div>
           </div>
           <div class="metric-box">
-            <div class="metric-title">Total Requests</div>
-            <div id="metricTotalReqs" class="metric-val val-green">148,920</div>
+            <div class="metric-title">Total Requisições</div>
+            <div id="metricTotalReqs" class="metric-val val-green">148.920</div>
           </div>
           <div class="metric-box">
-            <div class="metric-title">eBPF Security</div>
-            <div class="metric-val val-green">ENFORCING</div>
+            <div class="metric-title">Segurança eBPF</div>
+            <div class="metric-val val-green">MONITORANDO</div>
           </div>
           <div class="metric-box">
-            <div class="metric-title">Network Ingress</div>
+            <div class="metric-title">Tráfego de Rede</div>
             <div class="metric-val val-cyan">48.2 MB/s</div>
           </div>
         </div>
 
-        <!-- Infrastructure Nodes List -->
+        <!-- Lista de Nós do Service Mesh -->
         <div style="margin-top: 14px;">
           <div style="font-size: 10px; color: var(--text-dim); text-transform: uppercase; font-weight: 700; margin-bottom: 6px;">
-            Service Mesh Infrastructure Nodes
+            Nós de Infraestrutura Conectados
           </div>
           <div id="nodeList" class="node-list">
-            <!-- Dynamically populated by cluster.js -->
+            <!-- Povoado dinamicamente pelo cluster.js -->
           </div>
         </div>
 
       </div>
     </section>
 
-    <!-- Column 2: Real-time Throughput (RPS) Canvas & SRE Incidents -->
+    <!-- Coluna 2: Gráfico Canvas 60 FPS de Tráfego e Incidentes SRE -->
     <section class="center-column">
       
-      <!-- Real-time Canvas Line Graph -->
+      <!-- Gráfico de Vazão e Latência em Tempo Real -->
       <div class="hud-panel chart-panel">
         <div class="panel-header">
-          <span>THROUGHPUT & REQUEST TRAFFIC ENGINE</span>
-          <span class="badge">60 FPS CANVAS</span>
+          <span>MOTOR DE VAZÃO E TRÁFEGO DE REQUISIÇÕES</span>
+          <span class="badge">CANVAS 60 FPS</span>
         </div>
         <div class="panel-body" style="padding: 6px;">
           <canvas id="telemetryChart"></canvas>
         </div>
       </div>
 
-      <!-- SRE Incident & Alert Feed -->
+      <!-- Feed em Tempo Real de Incidentes SRE -->
       <div class="hud-panel incident-panel">
         <div class="panel-header">
-          <span>REAL-TIME INFRASTRUCTURE INCIDENT FEED</span>
-          <span class="badge">AUTOMATED TRIAGE</span>
+          <span>FEED DE INCIDENTES E EVENTOS DO CLUSTER</span>
+          <span class="badge">TRIAGEM AUTOMÁTICA</span>
         </div>
         <div class="panel-body">
           <div class="incident-feed">
             <div class="incident-card">
-              <span class="val-green">[RESOLVED]</span> Kubernetes horizontal pod autoscaler scaled cluster to 24 replicas.
+              <span class="val-green">[RESOLVIDO]</span> Autoscaler horizontal do Kubernetes escalou cluster para 24 réplicas.
             </div>
             <div class="incident-card warn">
-              <span class="val-amber">[WARNING]</span> Memory usage on database replica node <code>pg-replica-02</code> reached 78%.
+              <span class="val-amber">[AVISO]</span> Uso de memória na réplica <code>pg-replica-02</code> atingiu 78%.
             </div>
             <div class="incident-card critical">
-              <span class="val-red">[MITIGATED]</span> Layer-7 DDoS HTTP flood mitigated by Cloud WAF (3,200 req/s dropped from 24 bot IPs).
+              <span class="val-red">[MITIGADO]</span> Ataque DDoS HTTP Camada 7 mitigado pelo Cloud WAF (3.200 req/s descartadas de 24 IPs zumbis).
             </div>
           </div>
         </div>
@@ -148,25 +148,25 @@
 
     </section>
 
-    <!-- Column 3: Distributed Tracing & OpenTelemetry Stream -->
+    <!-- Coluna 3: Rastreamento Distribuído OpenTelemetry -->
     <section class="hud-panel right-column">
       <div class="panel-header">
-        <span>DISTRIBUTED OPENTELEMETRY TRACES</span>
-        <span class="badge">LIVE SPANS</span>
+        <span>SPANS DE RASTREAMENTO OPENTELEMETRY</span>
+        <span class="badge">SPANS AO VIVO</span>
       </div>
       <div class="panel-body" style="display: flex; flex-direction: column;">
         
-        <!-- Filter Bar -->
+        <!-- Barra de Filtros -->
         <div class="filter-bar">
-          <button class="filter-pill active" data-filter="ALL">ALL</button>
+          <button class="filter-pill active" data-filter="ALL">TODOS</button>
           <button class="filter-pill" data-filter="HTTP">HTTP/gRPC</button>
-          <button class="filter-pill" data-filter="SQL">DATABASE</button>
-          <button class="filter-pill" data-filter="BLOCKED">SECURITY</button>
+          <button class="filter-pill" data-filter="SQL">BANCO DE DADOS</button>
+          <button class="filter-pill" data-filter="BLOCKED">SEGURANÇA</button>
         </div>
 
-        <!-- Traces Stream -->
+        <!-- Fluxo de Spans -->
         <div id="traceStream" class="trace-stream">
-          <!-- Dynamically populated by cluster.js -->
+          <!-- Povoado dinamicamente pelo cluster.js -->
         </div>
 
       </div>
@@ -174,11 +174,11 @@
 
   </main>
 
-  <!-- Modal for Span Inspection -->
+  <!-- Modal para Inspeção Profunda de Spans -->
   <div id="traceModal" class="modal-backdrop">
     <div class="modal-content">
       <div class="modal-header">
-        <span id="modalTraceTitle" class="modal-title">SPAN INSPECTION</span>
+        <span id="modalTraceTitle" class="modal-title">INSPEÇÃO DE SPAN</span>
         <button id="modalCloseBtn" class="modal-close-btn">&times;</button>
       </div>
       <div id="traceJsonViewer" class="json-inspector"></div>

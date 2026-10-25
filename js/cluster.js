@@ -1,5 +1,5 @@
 /**
- * NetPulse-3D // Cloud Cluster Manager & Distributed Trace Dispatcher
+ * NetPulse-3D // Gerenciador de Cluster e Spans de Telemetria
  */
 
 export class ClusterManager {
@@ -9,11 +9,11 @@ export class ClusterManager {
     this.engine3d = engine3d;
 
     this.nodes = [
-      { id: 'Kube-Core-Cluster', role: 'Microservices Pods', status: 'HEALTHY', metric: '24 Pods | 42% CPU' },
-      { id: 'Edge-WAF-Gateway', role: 'Envoy / Cloud Ingress', status: 'HEALTHY', metric: '48.2 MB/s | TLS 1.3' },
-      { id: 'Postgres-Primary-DB', role: 'Multi-AZ Database', status: 'BUSY', metric: '38/100 Conns | 2.4k IOPS' },
-      { id: 'Kafka-Event-Bus', role: 'Event Stream Broker', status: 'HEALTHY', metric: '12 Partitions | 0 Lag' },
-      { id: 'SOC-Security-Sentinel', role: 'eBPF / Falco Runtime', status: 'ALERT', metric: '1 Threat Blocked' }
+      { id: 'Kube-Core-Cluster', role: 'Microsserviços Kubernetes', status: 'SAUDÁVEL', metric: '24 Pods | 42% CPU' },
+      { id: 'Edge-WAF-Gateway', role: 'Envoy / Ingress Cloud', status: 'SAUDÁVEL', metric: '48.2 MB/s | TLS 1.3' },
+      { id: 'Postgres-Primary-DB', role: 'Banco de Dados Multi-AZ', status: 'OCUPADO', metric: '38/100 Conexões | 2.4k IOPS' },
+      { id: 'Kafka-Event-Bus', role: 'Barramento de Eventos', status: 'SAUDÁVEL', metric: '12 Partições | 0 Lag' },
+      { id: 'SOC-Security-Sentinel', role: 'Auditoria Runtime eBPF', status: 'ALERTA', metric: '1 Ameaça Bloqueada' }
     ];
 
     this.traces = [];
@@ -34,7 +34,7 @@ export class ClusterManager {
         this.renderTraces();
       }
     } catch (e) {
-      // Mock fallback
+      // Fallback
     }
 
     this.startSimulation();
@@ -77,28 +77,28 @@ export class ClusterManager {
         target: 'Kube-Core-Cluster',
         protocol: 'HTTP/2',
         status: '200_OK',
-        details: 'GET /api/v1/telemetry dispatched to worker-pod-3b.'
+        details: 'GET /api/v1/telemetry roteado para worker-pod-3b com sucesso.'
       },
       {
         source: 'Kube-Core-Cluster',
         target: 'Postgres-Primary-DB',
         protocol: 'gRPC/SQL',
         status: '200_OK',
-        details: 'Batch transaction committed in 3.1ms.'
+        details: 'Transação em lote confirmada no banco em 3.1ms.'
       },
       {
         source: 'Edge-WAF-Gateway',
         target: 'SOC-Security-Sentinel',
         protocol: 'HTTPS',
         status: '403_BLOCKED',
-        details: 'WAF Rule Triggered: Automated bot credential stuffing dropped.'
+        details: 'Regra WAF #941 acionada: tentativa de SQL Injection descartada.'
       },
       {
         source: 'Kube-Core-Cluster',
         target: 'Kafka-Event-Bus',
         protocol: 'Kafka/TCP',
         status: 'PRODUCED',
-        details: 'Audit log record pushed to cloud telemetry stream.'
+        details: 'Evento de auditoria registrado no tópico telemetry.audit.events.'
       }
     ];
 
@@ -133,8 +133,8 @@ export class ClusterManager {
 
     list.innerHTML = this.nodes.map(n => {
       let statusClass = 'status-healthy';
-      if (n.status === 'BUSY') statusClass = 'status-busy';
-      if (n.status === 'ALERT') statusClass = 'status-alert';
+      if (n.status === 'OCUPADO') statusClass = 'status-busy';
+      if (n.status === 'ALERTA') statusClass = 'status-alert';
 
       return `
         <div class="node-card" onclick="window.netPulse.focusNode('${n.id}')">
@@ -185,7 +185,7 @@ export class ClusterManager {
     const titleEl = document.getElementById('modalTraceTitle');
 
     if (modal && jsonEl && titleEl) {
-      titleEl.innerText = `SPAN INSPECTION // ${trace.id}`;
+      titleEl.innerText = `INSPEÇÃO DE SPAN // ${trace.id}`;
       jsonEl.innerText = JSON.stringify(trace, null, 2);
       modal.style.display = 'flex';
     }

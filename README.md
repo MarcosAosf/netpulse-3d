@@ -1,120 +1,123 @@
-# 🌐 NetPulse-3D // Cloud Network Topology & SRE Observability HUD
+# 🌐 NetPulse-3D // Topologia de Rede Cloud & Observabilidade SRE
 
 [![GitHub Pages](https://img.shields.io/badge/Deploy-GitHub%20Pages-brightgreen?style=for-the-badge&logo=github)](https://MarcosAosf.github.io/netpulse-3d/)
 [![Three.js](https://img.shields.io/badge/Three.js-r128-black?style=for-the-badge&logo=three.js)](https://threejs.org/)
 [![JavaScript](https://img.shields.io/badge/ES6%2B-Vanilla%20Architecture-yellow?style=for-the-badge&logo=javascript)](https://developer.mozilla.org/)
-[![Observability](https://img.shields.io/badge/DevOps-OpenTelemetry%20%26%20SRE-blue?style=for-the-badge)](https://opentelemetry.io/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-purple?style=for-the-badge)](LICENSE)
+[![Observabilidade](https://img.shields.io/badge/DevOps-OpenTelemetry%20%26%20SRE-blue?style=for-the-badge)](https://opentelemetry.io/)
+[![Licença: MIT](https://img.shields.io/badge/Licen%C3%A7a-MIT-purple?style=for-the-badge)](LICENSE)
 
-> **Real-time 3D cloud infrastructure topology and SRE observability cockpit for Kubernetes service meshes, edge gateways, and SOC security telemetry.**  
-> *Engineered with Three.js WebGL rendering, 60 FPS Canvas throughput graph, Web Audio API procedural synthesizer, and modular Vanilla ES6 architecture for instant deployment to GitHub Pages.*
+> **Cockpit de observabilidade SRE e visualizador 3D em tempo real para topologias de rede em nuvem, microsserviços Kubernetes e telemetria de segurança SOC.**  
+> *Construído com renderização WebGL em Three.js, motor de gráficos Canvas nativo a 60 FPS, sintetizador de áudio procedural (Web Audio API) e arquitetura modular ES6 sem necessidade de compilação ou dependências externas.*
 
 ---
 
-## 📸 Interface Architecture
+## 📸 Demonstração Visual e Prévia da Interface
+
+![Prévia do NetPulse-3D](assets/preview.png)
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
-│  NETPULSE-3D  │ STATUS: HEALTHY (99.98%) │ RPS: 1,420 req/s │ P95: 2.4ms │ MITIGATED: 14 │
+│  NETPULSE-3D  │ STATUS: SAUDÁVEL (99.98%) │ VAZÃO: 1.420 req/s │ P95: 2.4ms │ SOC: 14  │
 ├──────────────────────────┬───────────────────────────────┬─────────────────────────────┤
-│ 3D CLUSTER MESH TOPOLOGY │ TRAFFIC THROUGHPUT ENGINE     │ DISTRIBUTED OPENTELEMETRY   │
+│ TOPOLOGIA 3D DO CLUSTER  │ MOTOR DE VAZÃO & LATÊNCIA     │ SPANS OPENTELEMETRY AO VIVO │
 │                          │                               │                             │
-│   [ Three.js WebGL ]     │      [ 60 FPS Canvas ]        │ [14:35:10] Ingress ➔ Kube:  │
-│      K8s Core Node       │   Real-time RPS & Latency     │ >> GET /api/v1/auth (1.8ms) │
-│       /\        /\       │   Interactive Gradient Curve  │                             │
+│   [ Three.js WebGL ]     │      [ Canvas 60 FPS ]        │ [14:35:10] Ingress ➔ Kube:  │
+│      Nó Central K8s      │  Curva Dinâmica de Throughput │ >> GET /api/v1/auth (1.8ms) │
+│       /\        /\       │    Vazão (req/s) e Latência   │                             │
 │      /  \      /  \      │                               │ [14:35:12] WAF ➔ SOC:       │
 │  Ingress  DB   Kafka     │───────────────────────────────│ >> 403_BLOCKED (SQLi Drop)  │
-│                          │ SRE INCIDENT & ALERT FEED     │                             │
-│ ──────────────────────── │ [OK] K8s HPA: 24 Replicas     │ [14:35:14] Kube ➔ Kafka:    │
-│ Pods: 24/24 | eBPF: OK   │ [WARN] DB Mem pressure (78%)  │ >> Produced audit event     │
+│                          │ FEED DE INCIDENTES SRE        │                             │
+│ ──────────────────────── │ [OK] K8s HPA: 24 Réplicas     │ [14:35:14] Kube ➔ Kafka:    │
+│ Pods: 24/24 | eBPF: OK   │ [AVISO] Memória DB em 78%     │ >> Evento de auditoria      │
 └──────────────────────────┴───────────────────────────────┴─────────────────────────────┘
 ```
 
 ---
 
-## 🏛️ System Architecture
+## 🏛️ Arquitetura de Engenharia de TI
 
 ```mermaid
 flowchart TD
-    subgraph Edge & Network Layer
-        A[Inbound Client Traffic] --> B[Edge-WAF-Gateway]
-        B -->|Rate-Limiting / TLS Termination| C[Kubernetes Ingress Controller]
+    subgraph Borda & Redes
+        A[Tráfego de Clientes] --> B[Edge-WAF-Gateway / Envoy]
+        B -->|Terminação TLS & Rate Limit| C[Kubernetes Ingress Controller]
     end
 
     subgraph Service Mesh Core
         C --> D[Kube-Core-Cluster Pods]
-        D -->|Connection Pool Query| E[(Postgres-Primary-DB)]
-        D -->|Async Event Queue| F[[Kafka-Event-Bus]]
+        D -->|Connection Pooling| E[(Postgres-Primary-DB)]
+        D -->|Fila de Mensageria Assíncrona| F[[Kafka-Event-Bus]]
     end
 
-    subgraph Security & Observability
-        D -.->|eBPF Telemetry Spans| G[SOC-Security-Sentinel]
-        B -.->|Blocked Threat Telemetry| G
-        G --> H[OpenTelemetry Trace Hub]
+    subgraph Segurança & Observabilidade
+        D -.->|Telemetria eBPF| G[SOC-Security-Sentinel]
+        B -.->|Ameaças Bloqueadas 403| G
+        G --> H[OpenTelemetry Event Stream]
     end
 
-    subgraph 3D Visual HUD
-        H --> I[Three.js Interactive Topology Grid]
-        H --> J[60 FPS Canvas Throughput Engine]
-        H --> K[Web Audio Procedural Sound Synthesizer]
+    subgraph Interface Front-end 3D
+        H --> I[Three.js Malha 3D Interativa]
+        H --> J[Canvas Nativo 60 FPS - Tráfego]
+        H --> K[Web Audio API - Sirenes & Pings de Rede]
     end
 ```
 
 ---
 
-## ⚡ Key Technical Capabilities
+## ⚡ Principais Capacidades Técnicas
 
-1. **Three.js WebGL Service Mesh Topology:**
-   - Real-time rotating 3D infrastructure nodes representing Cloud Ingress, Kubernetes Service Mesh, Database Clusters, Message Brokers, and SOC Engines.
-   - Interactive mouse raycasting: hover and click on any infrastructure node to trigger localized packet pings.
-   - Animated glowing network vectors with particle flows representing live microservice transactions.
+1. **Topologia 3D de Service Mesh (Three.js WebGL):**
+   - Nós tridimensionais interativos representando: Gateway de Borda (Ingress), Cluster Kubernetes Central, Banco de Dados Relacional, Barramento Kafka e Sentinela de Segurança SOC.
+   - Detecção com Raycasting: passe o mouse ou clique em qualquer nó para inspecionar métricas isoladas e disparar pulsos de telemetria.
+   - Partículas dinâmicas simulando o tráfego contínuo de pacotes de dados na malha de rede.
 
-2. **Ultra-Fast 60 FPS Canvas Telemetry Engine:**
-   - Zero-dependency canvas engine plotting real-time Request-Per-Second (RPS) throughput curves and P95/P99 latency fluctuations.
+2. **Gráfico de Vazão em Canvas Nativo a 60 FPS:**
+   - Visualizador de Throughput (Requisições por Segundo) e Latência P95/P99 em tempo real com gradiente neon sem uso de bibliotecas externas pesadas.
 
-3. **OpenTelemetry Distributed Tracing Stream:**
-   - Emulates distributed spans (HTTP/2, gRPC, TCP, Kafka) with latency measurements, payload sizes, and status codes.
-   - Live category filter pills and interactive JSON inspection modal.
+3. **Rastreamento Distribuído OpenTelemetry:**
+   - Fluxo ao vivo de spans (HTTP/2, gRPC, consultas SQL e eventos Kafka) com tempos de resposta, tamanho de payload e status code.
+   - Filtros dinâmicos e modal interativo para inspeção profunda de payloads JSON.
 
-4. **Web Audio API Procedural Synthesizer:**
-   - Generates authentic network ping blips and multi-tone warning sirens for critical security incidents without external `.wav`/`.mp3` files.
+4. **Sintetizador de Áudio Procedural (Web Audio API):**
+   - Gera bips de pacotes de rede e sirenes sonoras de alerta de segurança em tempo real diretamente via código, sem necessidade de arquivos `.mp3` ou `.wav` externos.
 
-5. **Pure Vanilla Web Architecture:**
-   - Zero build step (`npm run build` not required).
-   - Deploys instantly to GitHub Pages or any static CDN.
+5. **Arquitetura Web Limpa (Zero Build Step):**
+   - Funciona imediatamente ao abrir o arquivo `index.html` ou ao ser publicado diretamente no **GitHub Pages**.
 
 ---
 
-## 💻 Local Quickstart
+## 💻 Execução Local Imediata
+
+Como o **NetPulse-3D** utiliza módulos nativos ES6 sem dependências de compilação:
 
 ```bash
-# Clone the repository
+# Clone o repositório
 git clone https://github.com/MarcosAosf/netpulse-3d.git
 cd netpulse-3d
 
-# Run with Python built-in server
+# Inicie com o servidor HTTP nativo do Python
 python -m http.server 8080
 ```
-Open your browser at: `http://localhost:8080`
+Abra seu navegador em: `http://localhost:8080`
 
 ---
 
-## 🌐 Deploy to GitHub Pages
+## 🌐 Deploy no GitHub Pages (Passo a Passo)
 
-1. Push this repository to GitHub.
-2. In your repository on GitHub, navigate to **Settings** -> **Pages**.
-3. Under **Branch**, select `main` and `/ (root)`.
-4. Click **Save**.
-5. Your live telemetry cockpit will be online at:  
+1. Envie o repositório para o seu GitHub.
+2. Acesse a aba **Settings** ➔ **Pages** no seu repositório.
+3. Em **Branch**, selecione `main` e `/ (root)`.
+4. Clique em **Save**.
+5. O seu cockpit estará no ar em:  
    👉 **`https://MarcosAosf.github.io/netpulse-3d/`**
 
 ---
 
-## 👤 Author & Portfolio
+## 👤 Autor & Contato
 
 **Marcos A.**  
-*Software & Infrastructure Engineer | Networks, Cloud & DevOps*  
+*Engenheiro de Software & Infraestrutura | Redes, Cloud & DevOps*  
 - **GitHub:** [@MarcosAosf](https://github.com/MarcosAosf)
 
 ---
-*Distributed under the MIT License.*
+*Distribuído sob a Licença MIT.*
